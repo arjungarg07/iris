@@ -7,18 +7,33 @@ const path = require("path");
 app.use(bodyParser.json());
 app.use(cors());
 
+require("./db.js");
+
 const port = 8000||process.env.PORT;
-// app.engine('html', require('ejs').renderFile);
-// app.use('/static', express.static(path.join(__dirname, 'public')));
-app.use(express.static(path.join(__dirname, 'views')));
+
+app.use('/', express.static(path.join(__dirname, 'public')))
+
+app.set('views', __dirname + '/views');
+app.engine('html', require('ejs').renderFile);
 
 app.get("/",(req,res)=>{
-    res.render("./views/index.html");
+    res.render("home.html");
 });
 
 app.get("/blog",(req,res)=>{
-    res.render("http://localhost:8000/posthere.html");
+    res.render("blog.html");
 });
+
+app.get("/adminlogin",(req,res)=>{
+    res.render("adminlogin.html");
+});
+
+app.post('/postform',(req,res)=>{
+    const  {name,title,type,tags,content,} = req.body;
+    console.log(name,title,type,tags,content);    
+
+    res.send('Badiya Ladke');
+})
 
 
 app.listen(port,()=>{

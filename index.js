@@ -27,12 +27,17 @@ app.get("/blog",(req,res)=>{
 app.get("/adminlogin",(req,res)=>{
     res.render("adminlogin.html");
 });
+ 
+app.post('/postform',async (req,res)=>{
+    try{
 
-app.post('/postform',(req,res)=>{
+    }catch(err){
+        console.log()
+    }
     const  {name,title,type,tags,content,} = req.body;
     console.log(name,title,type,tags,content);    
 
-    res.send('Badiya Ladke');
+    res.send("req registered");
 })
 
 

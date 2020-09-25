@@ -14,7 +14,7 @@ document
   ] = e.target.elements;
 
 //   console.log(name, title, type, tags, content);
-  let data = {
+  const data = {
     name,
     title,
     type,

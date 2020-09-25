@@ -29,7 +29,8 @@ const articleSchema = new Schema({
     },
 
 });
-export default mongoose.model('article', articleSchema);
+
+module.exports = mongoose.model('article', articleSchema);
 
 
 // email: {

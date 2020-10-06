@@ -11,12 +11,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 require("./db.js");
-<<<<<<< HEAD
-require("./server/models/article");
-||||||| 716beec
-=======
 require("./server/models/article")
->>>>>>> f7ac6d268ce3b1bfe3e7af9e6d5ec61ef5501f5b
 
 const port = 8000||process.env.PORT;
 
@@ -47,27 +42,6 @@ app.post('/postform',async (req,res)=>{
     }catch(err){
         console.log()
     }
-<<<<<<< HEAD
-    const  {name,title,type,tags,content} = req.body;
-    const data = new article({
-        type_of   : type,
-        title     : title,
-        content   : content,
-        user_name : name,
-        created_at: Date.now(),
-    })
-    data.save((err)=>{
-        if(err) console.log(err);
-    });
-    // console.log(name,title,type,tags,content); 
-    // res.send("req registered");
-    res.send({ status: 1,msg: 'arbitary post successfully registered '});
-||||||| 716beec
-    const  {name,title,type,tags,content,} = req.body;
-    console.log(name,title,type,tags,content);    
-
-    res.send("req registered");
-=======
     const  {name,title,type,tags,content} = req.body;
     const data = new article({
         type_of   : type,
@@ -81,7 +55,6 @@ app.post('/postform',async (req,res)=>{
     });
     // console.log(name,title,type,tags,content); 
     res.send("req registered");
->>>>>>> f7ac6d268ce3b1bfe3e7af9e6d5ec61ef5501f5b
 })
 
 console.log("printing saved data"); 

@@ -1,5 +1,3 @@
-import { string } from "prop-types";
-
 const mongoose = require("mongoose");
 const {Schema} = mongoose;
 // 1st Step is building Schema

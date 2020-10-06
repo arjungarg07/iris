@@ -43,8 +43,11 @@
           try{
               const response = await fetch('/content');
               const result = await response.json();
-              console.log(result.data.content);
+              console.log(result.data.title);
               document.getElementById("content").innerHTML = result.data.content.split('\n').join('<br/>');
+              document.getElementById("title").innerHTML = result.data.title;
+              const published_date = result.data.created_at;
+              document.getElementById("published").innerHTML = `Published ${published_date}`;
             }catch(err){
                 console.log(err);
             }

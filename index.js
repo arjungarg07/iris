@@ -3,17 +3,19 @@ const app = express();
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const path = require("path");
-const article = require("./server/models/article.js");
+
+const {article} = require("./server/models/article");
 
 app.use(bodyParser.json());
 app.use(cors());
 
 require("./db.js");
-require("./server/models/article")
+require("./server/models/article");
 
 const port = 8000||process.env.PORT;
 
-app.use('/', express.static(path.join(__dirname, 'public')))
+app.use('/', express.static(path.join(__dirname, 'public')));
+
 
 app.set('views', __dirname + '/views');
 app.engine('html', require('ejs').renderFile);
@@ -51,7 +53,8 @@ app.post('/postform',async (req,res)=>{
         if(err) console.log(err);
     });
     // console.log(name,title,type,tags,content); 
-    res.send("req registered");
+    // res.send("req registered");
+    res.send({ status: 1,msg: 'arbitary post successfully registered '});
 })
 
 console.log("printing saved data"); 

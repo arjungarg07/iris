@@ -5,13 +5,13 @@ const cors = require("cors");
 const path = require("path");
 const article = require("./server/models/article.js");
 
-const {article} = require("./server/models/article");
+// const {article} = require("./server/models/article");
 
 app.use(bodyParser.json());
 app.use(cors());
 
 require("./db.js");
-require("./server/models/article")
+// require("./server/models/article")
 
 const port = 8000||process.env.PORT;
 
@@ -38,24 +38,24 @@ app.get('/adminlogin',(req,res)=>{
 })
 app.post('/postform',async (req,res)=>{
     try{
+        const  {name,title,type,tags,content} = req.body;
+        const data = new article({
 
+            type_of   : type,
+            title     : title,
+            content   : content,
+            user_name : name,
+            created_at: Date.now(),
+        })
+        data.save((err)=>{
+            if(err) console.log(err);
+        });
+        // console.log(name,title,type,tags,content); 
+        res.send("req registered");
     }catch(err){
         console.log()
     }
-    const  {name,title,type,tags,content} = req.body;
-    const data = new article({
-        type_of   : type,
-        title     : title,
-        content   : content,
-        user_name : name,
-        created_at: Date.now(),
-    })
-    data.save((err)=>{
-        if(err) console.log(err);
-    });
-    // console.log(name,title,type,tags,content); 
-    res.send("req registered");
-})
+});
 
 console.log("printing saved data"); 
 // article.deleteMany(function (err, articles) {

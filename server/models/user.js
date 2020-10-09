@@ -1,20 +1,18 @@
-import { string } from "prop-types";
-
 const mongoose = require("mongoose");
 const {Schema} = mongoose;
 // 1st Step is building Schema
 const userSchema = new Schema({
     username: {
         type: String,
-        required: true,
     },
     password: {
-        type: String,
-        required: true,
+        type: String
     }
 });
 // 2nd Step is compiling schema into model
-export default mongoose.model('User', userSchema);
+module.exports = mongoose.model('User', userSchema);
+
+// export default mongoose.model('User', userSchema);
 
 // how to add "speak" functionality to our documents:
 

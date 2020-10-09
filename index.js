@@ -3,12 +3,33 @@ const app = express();
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const path = require("path");
+const passport = require('passport'),LocalStrategy = require('passport-local').Strategy;
+const flash=require("connect-flash");
+
+/////////////////////////////////////////////////
 const article = require("./server/models/article.js");
+const User = require("./server/models/user.js");
 
 // const {article} = require("./server/models/article");
 
+app.use(flash());
 app.use(bodyParser.json());
 app.use(cors());
+app.use(require('cookie-parser')());
+// app.use(require('body-parser').urlencoded({ extended: true }));
+app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
+app.use(passport.initialize());
+app.use(passport.session());
+
+// passport.serializeUser(function (user, done) {
+//     done(null, user.id);
+// });
+
+// passport.deserializeUser(function (id, done) {
+//     user.findById(id, function (err, user) {
+//         done(err, user);
+//     });
+// });
 
 require("./db.js");
 // require("./server/models/article")
@@ -28,7 +49,20 @@ app.get("/",(req,res)=>{
 app.get("/blog",(req,res)=>{
     res.render("blog.html");
 });
-
+// const myone = "arjungarg07";
+// const mypass = "admin";
+// const data = new User({
+//     username : myone,
+//     password : mypass
+// })
+// data.save((err)=>{
+//     if(err) console.log(err);
+// });
+// User.findOne(function (err, data) {
+//     // if (err) return res.json({ status: 0, msg: 'something went wrong' });
+//     // res.send({ status: 1,msg: 'arbitary article successfully fetched', data });
+//     console.log(data);
+// });
 app.get("/adminpanel",(req,res)=>{
     res.render("adminpanel.html");
 });
@@ -53,7 +87,7 @@ app.post('/postform',async (req,res)=>{
         // console.log(name,title,type,tags,content); 
         res.send("req registered");
     }catch(err){
-        console.log()
+        console.log(err);
     }
 });
 
@@ -74,6 +108,47 @@ app.get('/content',async (req,res)=>{
         res.json({ status: 0, msg: 'something went wrong' });
     }
 })
+
+// ========================
+// ======Authentication====
+//=========================
+
+// passport.use(new LocalStrategy({
+//     passReqToCallback : true
+// },function(username, password, done) {
+//     user.findOne({ username: username }, function(err, user) {
+//         if (err) { return done(err); }
+//         if (!user) {
+//             return done(null, false, { message: 'Incorrect username.' });
+//         }
+//         if (!user.password(password)) {
+//             return done(null, false, { message: 'Incorrect password.' });
+//         }
+//         return done(null, user);
+//     });
+// }
+// ));
+passport.use(new LocalStrategy(
+    function (username, password, done) {
+        console.log("dssdsd");
+        User.findOne({ username: username }, function (err, user) {
+            if (err) { return done(err); }
+            if (!user) {
+                return done(null, false, { message: 'Incorrect username.' });
+            }
+            if (!(user.password === password)) {
+                return done(null, false, { message: 'Incorrect password.' });
+            }
+            return done(null, user);
+        });
+    }
+));
+
+app.post('/login',
+passport.authenticate('local', { successRedirect: '/',
+                                   failureRedirect: '/adminlogin',
+                                   failureFlash: true })
+);
 
 app.listen(port,()=>{
     console.log(`Rocking on http://localhost:${port}`);

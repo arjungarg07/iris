@@ -16,23 +16,14 @@ app.use(flash());
 app.use(bodyParser.json());
 app.use(cors());
 app.use(require('cookie-parser')());
-// app.use(require('body-parser').urlencoded({ extended: true }));
+app.use(require('body-parser').urlencoded({ extended: true }));
 app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 
-// passport.serializeUser(function (user, done) {
-//     done(null, user.id);
-// });
-
-// passport.deserializeUser(function (id, done) {
-//     user.findById(id, function (err, user) {
-//         done(err, user);
-//     });
-// });
 
 require("./db.js");
-// require("./server/models/article")
+
 
 const port = 8000||process.env.PORT;
 
@@ -67,7 +58,7 @@ app.get("/adminpanel",(req,res)=>{
     res.render("adminpanel.html");
 });
 
-app.get('/adminlogin',(req,res)=>{
+app.get('/login',(req,res)=>{
     res.render("adminlogin.html");
 })
 app.post('/postform',async (req,res)=>{
@@ -113,21 +104,6 @@ app.get('/content',async (req,res)=>{
 // ======Authentication====
 //=========================
 
-// passport.use(new LocalStrategy({
-//     passReqToCallback : true
-// },function(username, password, done) {
-//     user.findOne({ username: username }, function(err, user) {
-//         if (err) { return done(err); }
-//         if (!user) {
-//             return done(null, false, { message: 'Incorrect username.' });
-//         }
-//         if (!user.password(password)) {
-//             return done(null, false, { message: 'Incorrect password.' });
-//         }
-//         return done(null, user);
-//     });
-// }
-// ));
 passport.use(new LocalStrategy(
     function (username, password, done) {
         console.log("dssdsd");
@@ -144,8 +120,18 @@ passport.use(new LocalStrategy(
     }
 ));
 
+passport.serializeUser(function (user, done) {
+    done(null, user.id);
+});
+
+passport.deserializeUser(function (id, done) {
+    User.findById(id, function (err, user) {
+        done(err, user);
+    });
+});
+
 app.post('/login',
-passport.authenticate('local', { successRedirect: '/',
+passport.authenticate('local', { successRedirect: '/adminpanel',
                                    failureRedirect: '/adminlogin',
                                    failureFlash: true })
 );

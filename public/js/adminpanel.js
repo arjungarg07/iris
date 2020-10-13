@@ -1,5 +1,5 @@
 document
-.getElementById("post-form")
+.getElementById("post-blog")
 .addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -23,7 +23,7 @@ document
   };
 //   console.log(data);
 
-  const response = await fetch("/postform", {
+  const response = await fetch("/postblog", {
     method: "POST",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
